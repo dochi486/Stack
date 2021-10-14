@@ -6,11 +6,13 @@ public class GameManager : MonoBehaviour
     public int level; //블럭이 몇 개째인지 확인
     float cubeHeight;
     public float distance = 0.929f;
+    public Color nextColor;
 
     void Start()
     {
         cubeHeight = item.transform.localScale.y; //기존에 생성되어 있는 큐브의 높이
         item.gameObject.SetActive(false);
+        nextColor = item.GetComponent<Renderer>().material.GetColor("_ColorTop");
         CreateCube();
     }
 
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour
         if (Input.anyKeyDown)
             CreateCube();
     }
+
+    public float h;
 
     private void CreateCube()
     {
@@ -36,5 +40,14 @@ public class GameManager : MonoBehaviour
         }
         var newCube = Instantiate(item, startPos, item.transform.rotation);
         newCube.gameObject.SetActive(true);
+
+        //매테리얼 색 타입 HSV로 바꾸고 Hue(채도) 레벨마다 변경
+        Color.RGBToHSV(nextColor, out h, out float s, out float v);
+
+        nextColor = Color.HSVToRGB(h + 1f/256 * colorChangeStep, s, v);
+        newCube.GetComponent<Renderer>().material.SetColor("_ColorTop", nextColor);
+        newCube.GetComponent<Renderer>().material.SetColor("_ColorBottom", nextColor);
+
     }
+    public float colorChangeStep = 2f; //색 변하는 단계
 }
