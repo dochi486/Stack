@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         newCube.GetComponent<Renderer>().material.SetColor("_ColorTop", nextColor);
         newCube.GetComponent<Renderer>().material.SetColor("_ColorBottom", nextColor);
 
+        Camera.main.transform.Translate(0, cubeHeight, 0, Space.World);
     }
     public float colorChangeStep = 2f; //색 변하는 단계
 }
