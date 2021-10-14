@@ -5,6 +5,7 @@ public class MovingCube : MonoBehaviour
 
     Vector3 desPoint;   //목표지점
     Vector3 startPoint; //시작지점
+    internal Vector3 pivot;
 
     float startTime;
 

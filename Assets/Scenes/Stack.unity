@@ -1046,6 +1046,7 @@ MonoBehaviour:
   level: 0
   distance: 0.929
   nextColor: {r: 0, g: 0, b: 0, a: 0}
+  baseCube: {fileID: 1297744276}
   h: 0
   colorChangeStep: 3
 --- !u!4 &1929198834

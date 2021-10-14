@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     float cubeHeight;
     public float distance = 0.929f;
     public Color nextColor;
+    public Transform baseCube;
 
     void Start()
     {
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     }
 
     Transform topCubeTr;
+    Transform brokenCubeTr;
+    Transform lastCubeTr;
 
     void Update()
     {
@@ -28,7 +31,9 @@ public class GameManager : MonoBehaviour
             CreateCube();
         }
     }
+
     MovingCube previousCube;
+
     private void BreakCube()
     {
         if (previousCube == null)
@@ -37,25 +42,23 @@ public class GameManager : MonoBehaviour
 
 
         //스케일, 포지션을 구해서 부순다?
-        Vector3 newCubeScale;
-        Vector3 newCubePos;
+        Vector3 newCubeScale, newCubePos;
 
-        lastCubeTr = previousCube.transform;
 
-        newCubeScale = new Vector3(lastCubeTr.localScale.x - Mathf.Abs(lastCubeTr.localPosition.x - lastCubeTr.localRotation.x),
-            lastCubeTr.localScale.y, 
-            lastCubeTr.localScale.z - Math.Abs(lastCubeTr.localPosition.z - lastCubeTr.localRotation.z));
+        newCubeScale = new Vector3(topCubeTr.localScale.x - Mathf.Abs(brokenCubeTr.localPosition.x - topCubeTr.localRotation.x),
+            brokenCubeTr.localScale.y, 
+            topCubeTr.localScale.z - Math.Abs(brokenCubeTr.localPosition.z - topCubeTr.localRotation.z));
 
-        newCubePos = Vector3.Lerp(lastCubeTr.position, lastCubeTr.position, 0.5f) + Vector3.up * cubeHeight;
+        newCubePos = Vector3.Lerp(brokenCubeTr.position, topCubeTr.position, 0.5f) + Vector3.up * cubeHeight;
         //newCubeScale.
-        lastCubeTr.localScale = newCubeScale;
-        lastCubeTr.position = newCubePos;
-        lastCubeTr.GetComponent<MovingCube>().enabled = false;
-        lastCubeTr.name = "깨진 큐브";
+        brokenCubeTr.localScale = newCubeScale;
+        brokenCubeTr.position = newCubePos;
+        brokenCubeTr.GetComponent<MovingCube>().enabled = false;
+        brokenCubeTr.name = "깨진 큐브";
         //var currentCube = previousCube;
 
     }
-    Transform lastCubeTr;
+
 
 
     public float h;
@@ -75,6 +78,12 @@ public class GameManager : MonoBehaviour
             startPos = new Vector3(-distance, level * cubeHeight, distance);
         }
         var newCube = Instantiate(item, startPos, item.transform.rotation);
+
+        newCube.transform.parent = item.transform.parent;
+
+        if (brokenCubeTr != null)
+            newCube.pivot = brokenCubeTr.transform.position;
+
         newCube.gameObject.SetActive(true);
 
         //매테리얼 색 타입 HSV로 바꾸고 Hue(채도) 레벨마다 변경
@@ -86,7 +95,8 @@ public class GameManager : MonoBehaviour
 
         Camera.main.transform.Translate(0, cubeHeight, 0, Space.World);
 
-        previousCube = newCube;
+        topCubeTr = brokenCubeTr;
+        brokenCubeTr = newCube.transform;
     }
     public float colorChangeStep = 2f; //색 변하는 단계
 }
