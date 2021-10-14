@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,14 +13,26 @@ public class GameManager : MonoBehaviour
     {
         cubeHeight = item.transform.localScale.y; //기존에 생성되어 있는 큐브의 높이
         item.gameObject.SetActive(false);
-        nextColor = item.GetComponent<Renderer>().material.GetColor("_ColorTop");
+        nextColor = item.GetComponent<Renderer>().sharedMaterial.GetColor("_ColorTop");
         CreateCube();
     }
 
     void Update()
     {
         if (Input.anyKeyDown)
+        {
+            BreakCube(); //큐브 부수기
             CreateCube();
+        }
+    }
+    MovingCube previousCube;
+    private void BreakCube()
+    {
+        if (previousCube == null)
+            return;
+        //previousCube //지정 영역을 벗어나면 큐브가 부서지게한다
+        var currentCube = previousCube;
+        
     }
 
     public float h;
@@ -49,6 +62,8 @@ public class GameManager : MonoBehaviour
         newCube.GetComponent<Renderer>().material.SetColor("_ColorBottom", nextColor);
 
         Camera.main.transform.Translate(0, cubeHeight, 0, Space.World);
+
+        previousCube = newCube;
     }
     public float colorChangeStep = 2f; //색 변하는 단계
 }
