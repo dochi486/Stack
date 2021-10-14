@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
         cubeHeight = item.transform.localScale.y; //기존에 생성되어 있는 큐브의 높이
         item.gameObject.SetActive(false);
         nextColor = item.GetComponent<Renderer>().sharedMaterial.GetColor("_ColorTop");
-        
+
         CreateCube();
     }
-    
+
     Transform topCubeTr;
 
     void Update()
@@ -42,10 +42,9 @@ public class GameManager : MonoBehaviour
 
         lastCubeTr = previousCube.transform;
 
-        newCubeScale = new Vector3(lastCubeTr.localScale.x - 
-            Mathf.Abs(lastCubeTr.localPosition.x - lastCubeTr.localRotation.x), 
-            lastCubeTr.localScale.y,lastCubeTr.localScale.z - 
-            Math.Abs(lastCubeTr.localPosition.z - lastCubeTr.localRotation.z));
+        newCubeScale = new Vector3(lastCubeTr.localScale.x - Mathf.Abs(lastCubeTr.localPosition.x - lastCubeTr.localRotation.x),
+            lastCubeTr.localScale.y, 
+            lastCubeTr.localScale.z - Math.Abs(lastCubeTr.localPosition.z - lastCubeTr.localRotation.z));
 
         newCubePos = Vector3.Lerp(lastCubeTr.position, lastCubeTr.position, 0.5f) + Vector3.up * cubeHeight;
         //newCubeScale.
@@ -54,16 +53,17 @@ public class GameManager : MonoBehaviour
         lastCubeTr.GetComponent<MovingCube>().enabled = false;
         lastCubeTr.name = "깨진 큐브";
         //var currentCube = previousCube;
-        
+
     }
     Transform lastCubeTr;
+
 
     public float h;
 
     private void CreateCube()
     {
         level++;
-        //레벨이 홀수일 때는 오른쪽? 짝수일 때는 왼쪽에 블럭 배치
+        //레벨이 홀수일 때는 오른쪽, 짝수일 때는 왼쪽에 블럭 배치
         Vector3 startPos;
         if (level % 2 == 1) //홀수
         {
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         //매테리얼 색 타입 HSV로 바꾸고 Hue(채도) 레벨마다 변경
         Color.RGBToHSV(nextColor, out h, out float s, out float v);
 
-        nextColor = Color.HSVToRGB(h + 1f/256 * colorChangeStep, s, v);
+        nextColor = Color.HSVToRGB(h + 1f / 256 * colorChangeStep, s, v);
         newCube.GetComponent<Renderer>().material.SetColor("_ColorTop", nextColor);
         newCube.GetComponent<Renderer>().material.SetColor("_ColorBottom", nextColor);
 
