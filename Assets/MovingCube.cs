@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class MovingCube : MonoBehaviour
 {
 
-    Vector3 desPoint;   //¸ñÇ¥ÁöÁ¡
-    public Vector3 startPoint; //½ÃÀÛÁöÁ¡
+    Vector3 desPoint;   //ëª©í‘œì§€ì 
+    Vector3 startPoint; //ì‹œì‘ì§€ì 
 
     float startTime;
 
-    // Start is called before the first frame update
     void Start()
     {
         startPoint = transform.position;
@@ -18,10 +15,9 @@ public class MovingCube : MonoBehaviour
         startTime = Time.time;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float elapsTime = Time.time - startTime; //Èå¸¥ ½Ã°£
+        float elapsTime = Time.time - startTime; //íë¥¸ ì‹œê°„
         float time = Mathf.Abs(elapsTime % 2 - 1f);
         Vector3 pos = Vector3.Lerp(desPoint, startPoint, time);
         transform.position = pos;
