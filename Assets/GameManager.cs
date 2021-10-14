@@ -14,8 +14,11 @@ public class GameManager : MonoBehaviour
         cubeHeight = item.transform.localScale.y; //기존에 생성되어 있는 큐브의 높이
         item.gameObject.SetActive(false);
         nextColor = item.GetComponent<Renderer>().sharedMaterial.GetColor("_ColorTop");
+        
         CreateCube();
     }
+    
+    Transform topCubeTr;
 
     void Update()
     {
@@ -31,9 +34,29 @@ public class GameManager : MonoBehaviour
         if (previousCube == null)
             return;
         //previousCube //지정 영역을 벗어나면 큐브가 부서지게한다
-        var currentCube = previousCube;
+
+
+        //스케일, 포지션을 구해서 부순다?
+        Vector3 newCubeScale;
+        Vector3 newCubePos;
+
+        lastCubeTr = previousCube.transform;
+
+        newCubeScale = new Vector3(lastCubeTr.localScale.x - 
+            Mathf.Abs(lastCubeTr.localPosition.x - lastCubeTr.localRotation.x), 
+            lastCubeTr.localScale.y,lastCubeTr.localScale.z - 
+            Math.Abs(lastCubeTr.localPosition.z - lastCubeTr.localRotation.z));
+
+        newCubePos = Vector3.Lerp(lastCubeTr.position, lastCubeTr.position, 0.5f) + Vector3.up * cubeHeight;
+        //newCubeScale.
+        lastCubeTr.localScale = newCubeScale;
+        lastCubeTr.position = newCubePos;
+        lastCubeTr.GetComponent<MovingCube>().enabled = false;
+        lastCubeTr.name = "깨진 큐브";
+        //var currentCube = previousCube;
         
     }
+    Transform lastCubeTr;
 
     public float h;
 
