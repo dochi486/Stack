@@ -18,8 +18,8 @@ public class MovingCube : MonoBehaviour
 
     void Update()
     {
-        float elapsTime = Time.time - startTime; //흐른 시간
-        float time = Mathf.Abs(elapsTime % 2 - 1f);
+        float elapseTime = Time.time - startTime; //흐른 시간
+        float time = Mathf.Abs(elapseTime % 2 - 1f);
         Vector3 pos = Vector3.Lerp(desPoint, startPoint, time);
         transform.position = pos;
     }

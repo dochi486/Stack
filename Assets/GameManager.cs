@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
 
     Transform topCubeTr;
     Transform brokenCubeTr;
-    Transform lastCubeTr;
 
     void Update()
     {
@@ -40,10 +39,8 @@ public class GameManager : MonoBehaviour
             return;
         //previousCube //지정 영역을 벗어나면 큐브가 부서지게한다
 
-
         //스케일, 포지션을 구해서 부순다?
         Vector3 newCubeScale, newCubePos;
-
 
         newCubeScale = new Vector3(topCubeTr.localScale.x - Mathf.Abs(brokenCubeTr.localPosition.x - topCubeTr.localRotation.x),
             brokenCubeTr.localScale.y, 
@@ -56,9 +53,7 @@ public class GameManager : MonoBehaviour
         brokenCubeTr.GetComponent<MovingCube>().enabled = false;
         brokenCubeTr.name = "깨진 큐브";
         //var currentCube = previousCube;
-
     }
-
 
 
     public float h;
